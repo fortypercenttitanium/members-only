@@ -1,8 +1,89 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	font-family: 'Montserrat', sans-serif;
+	margin: 0;
+	display: block;
 }
 
 a {
-  color: #00B7FF;
+	color: #055777;
+	text-decoration: none;
+}
+
+nav {
+	font-family: 'Permanent Marker', cursive;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+nav > a > div {
+	display: flex;
+	padding: 2rem;
+	margin: 0 1rem;
+	cursor: pointer;
+	text-align: center;
+	font-size: 1.2rem;
+	font-weight: bold;
+	transition: 0.4s;
+}
+
+nav > a > div:hover {
+	background-color: lightgrey;
+}
+
+.title {
+	margin-right: auto;
+	text-align: center;
+	margin-left: 2rem;
+}
+
+.title > h1 {
+	font-size: 3rem;
+	margin: auto;
+}
+
+.form-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.new-post-button {
+	border: 1px solid grey;
+	font-size: 1rem;
+	font-weight: bold;
+	text-align: center;
+	padding: 1rem;
+	width: 8rem;
+	margin: auto auto 1rem;
+}
+
+.post-form {
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+	width: 50%;
+	text-align: center;
+	border: 1px solid grey;
+	border-radius: 5px;
+	padding: 2rem;
+}
+
+.post-form > * {
+	display: flex;
+	margin: auto;
+}
+
+.form-element {
+	width: 20rem;
+	margin-bottom: 1rem;
+}
+
+.form-element > input {
+	height: 1.2rem;
+}
+
+button {
+	width: 5rem;
+	padding: 1rem;
+	margin: 1rem;
 }

@@ -3,7 +3,8 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"start": "set DEBUG=members-only && nodemon ./bin/www"
+		"devstart": "set DEBUG=members-only && nodemon ./bin/www",
+		"start": "set DEGUB=members-only && node ./bin/www"
 	},
 	"dependencies": {
 		"bcrypt": "^5.0.0",

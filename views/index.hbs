@@ -1,2 +1,23 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<div class="body">
+	<h1>{{ title }}</h1>
+  <div class="form-container">
+  	<div class="new-post-button"><span>Create new post</span></div>
+    <form class="post-form" method="post" action="/">
+      <label for="title">Title:</label>
+      <input class="form-element" type="text" id="title" name="title" placeholder="Title" required />
+      <label for="message" name="message">Message:</label>
+      <textarea class="form-element" name="message" id="message" placeholder="Message" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+	<h2 class="posts-title">Messages:</h2>
+	<div class="posts">
+		{{#each posts}}
+		<div class="post-container">
+			<h2 class="post-title">{{ this.title }}</h2>
+			<p class="post-content">{{ this.message }}</p>
+			<p class="post-details">Posted by {{ this.author }} on {{ this.time }}</p>
+		</div>
+		{{/each}}
+	</div>
+</div>

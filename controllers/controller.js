@@ -1,8 +1,8 @@
+const post = require('../models/post');
+const user = require('../models/user');
+
 const index = function (req, res, next) {
-	res.render('index', { title: 'Express' });
-};
-const posts = function (req, res, next) {
-	res.send('Not yet implemented');
+	res.render('index', { title: 'Posts', messages });
 };
 const sign_in = function (req, res, next) {
 	res.send('Not yet implemented');
@@ -13,7 +13,6 @@ const sign_up = function (req, res, next) {
 
 module.exports = {
 	index,
-	posts,
 	sign_in,
 	sign_up,
 };

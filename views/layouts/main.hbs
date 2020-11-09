@@ -1,10 +1,31 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    {{{body}}}
-  </body>
+	<head>
+		<title>{{ title }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Montserrat:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="/stylesheets/style.css" />
+	</head>
+	<body>
+		<nav>
+      <div class="title">
+        <h1>Members Only</h1>
+      </div>
+			<a href="/">
+				<div>
+					<span> Home </span>
+				</div>
+			</a>
+			<a href="/signup">
+				<div>
+					<span> Sign up </span>
+				</div>
+			</a>
+			<a href="/login">
+				<div>
+					<span> Log in </span>
+				</div>
+			</a>
+		</nav>
+		{{{body}}}
+	</body>
 </html>
