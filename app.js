@@ -9,8 +9,14 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const exhbs = require('express-handlebars');
 const helpers = require('./helpers');
+const passport = require('passport');
+const session = require('express-session');
+const flash = require('connect-flash');
+const { strategy, serialize, deserialize } = require('./auth');
 
 const app = express();
+
+passport.use(strategy);
 
 mongoose.connect(process.env.MONGODB_URL, {
 	useNewUrlParser: true,
@@ -39,6 +45,24 @@ app.engine(
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+app.use(
+	session({
+		secret: 'oi57Vhij08hdHuygwDBu7',
+		resave: false,
+		saveUninitialized: true,
+	})
+);
+
+passport.serializeUser(serialize);
+
+passport.deserializeUser(deserialize);
+app.use((req, res, next) => {
+	res.locals.currentUser = req.user;
+	next();
+});
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
