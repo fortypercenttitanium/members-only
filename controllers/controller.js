@@ -14,6 +14,22 @@ const index = function (req, res, next) {
 		});
 };
 
+const sign_up_get = (req, res, next) => {
+	res.render('sign_up', { title: 'Sign up' });
+};
+
+const sign_up_post = (req, res, next) => {
+	res.send('Sign up post');
+};
+
+const login_get = (req, res, next) => {
+	res.render('login', { title: 'Login' });
+};
+
+const login_post = (req, res, next) => {
+	res.send('Sign in post');
+};
+
 const message_post = [
 	(req, res, next) => {
 		if (!res.locals.currentUser) {
@@ -28,27 +44,22 @@ const message_post = [
 		.isLength({ min: 1 })
 		.escape(),
 	(req, res, next) => {
-		const {title, message} = req.body
-		const { userName, id } = res.locals.currentUser;
+		const { title, message } = req.body;
+		const { userId } = res.locals.currentUser._id;
 		const post = {
 			title,
-			message
-		}
-		//todo
-		User.findByIdAndUpdate(id, {posts: })
+			message,
+			author: userId,
+			time: Date.now(),
+		};
 	},
 ];
 
-const sign_in = function (req, res, next) {
-	res.send('Not yet implemented');
-};
-const sign_up = function (req, res, next) {
-	res.send('Not yet implemented');
-};
-
 module.exports = {
 	index,
-	sign_in,
-	sign_up,
-	message_post
+	login_get,
+	sign_up_get,
+	login_post,
+	sign_up_post,
+	message_post,
 };

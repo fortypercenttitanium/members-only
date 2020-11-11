@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const postSchema = new mongoose.Schema({
+	title: {
+		type: String,
+		required: true,
+	},
 	message: {
 		type: String,
 		required: true,

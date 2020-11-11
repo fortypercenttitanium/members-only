@@ -27,11 +27,10 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	posts: [
-		{
-			type: Schema.Types.ObjectId,
-		},
-	],
+});
+
+userSchema.virtual('fullName').get(() => {
+	return this.firstName + ' ' + this.lastName;
 });
 
 module.exports = mongoose.model('User', userSchema);
