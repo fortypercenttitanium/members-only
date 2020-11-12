@@ -1,0 +1,11 @@
+{{#if errors}}
+<div style="display:block;margin:1rem auto;"
+<ul>
+  {{#each errors}}
+  <li style="color:red;">
+    {{this.msg}}
+  </li>
+  {{/each}}
+</ul>
+  </div>
+{{/if}}

@@ -46,7 +46,7 @@ app.set('view engine', 'hbs');
 
 app.use(
 	session({
-		secret: 'oi57Vhij08hdHuygwDBu7',
+		secret: process.env.SECRET,
 		resave: false,
 		saveUninitialized: true,
 	})
