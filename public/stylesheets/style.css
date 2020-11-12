@@ -42,9 +42,29 @@ nav > a > div:hover {
 	margin: auto;
 }
 
-.form-container {
+.main-container {
 	display: flex;
 	flex-direction: column;
+}
+
+.sign-up-form-container {
+	display: flex;
+	flex-direction: column;
+	background: lightblue;
+	border: 1px solid grey;
+	padding: 1rem 3rem;
+	border-radius: 10px;
+}
+
+.input-container {
+	margin: 2rem auto;
+	text-align: center;
+}
+
+.input-container > input {
+	padding: 5px;
+	margin: 8px;
+	width: 14rem;
 }
 
 .new-post-button {
@@ -85,5 +105,13 @@ nav > a > div:hover {
 button {
 	width: 5rem;
 	padding: 1rem;
-	margin: 1rem;
+}
+
+.sign-up-form-container {
+	margin: auto;
+	display: flex;
+}
+
+.sign-up-input {
+	display: block;
 }

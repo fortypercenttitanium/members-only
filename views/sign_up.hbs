@@ -1,12 +1,19 @@
-<h1>{{title}}</h1>
+<h1 style="margin:1rem auto;padding:1rem;">{{title}}</h1>
 
 <div class="sign-up-form-container">
   <form action="" method="post">
-    <label for="first-name">First name:</label>
-    <input type="text" name="first-name" id="first-name" required placeholder="John"/>
-    <label for="last-name">First name:</label>
-    <input type="text" name="last-name" id="last-name" required placeholder="Doe"/>
-    <label for="email">Email:</label>
-    <input type="email" name="email" id="email" required placeholder="person@domain.com" />
+    <div class="input-container">
+      <label for="first-name">First name:</label>
+      <input class="sign-up-input" type="text" name="first-name" id="first-name" required placeholder="John"/>
+    </div>
+    <div class="input-container">
+      <label for="last-name">Last name:</label>
+      <input class="sign-up-input" type="text" name="last-name" id="last-name" required placeholder="Doe"/>
+    </div>
+    <div class="input-container">
+      <label for="email">Email:</label>
+      <input class="sign-up-input" type="email" name="email" id="email" required placeholder="person@domain.com" />
+    </div>
+    <div class="input-container"><button type="submit">Submit</button></div>
   </form>
 </div>
