@@ -1,6 +1,7 @@
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 require('dotenv').config();
@@ -12,6 +13,9 @@ const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
 const { strategy, serialize, deserialize } = require('./auth');
+const {
+	allowInsecurePrototypeAccess,
+} = require('@handlebars/allow-prototype-access');
 
 const app = express();
 
@@ -62,7 +66,8 @@ app.use((req, res, next) => {
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(logger('dev'));
+const logStream = fs.createWriteStream(path.join(__dirname, 'logs.txt'));
+app.use(logger('dev', { stream: logStream }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -72,7 +77,7 @@ app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-	next(createError(404));
+	next(createError(404, 'Page not found'));
 });
 
 // error handler

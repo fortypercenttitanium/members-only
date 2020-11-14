@@ -27,32 +27,53 @@ const sign_up_post = [
 		.trim()
 		.isLength({ min: 8 })
 		.escape(),
-	(req, res, next) => {
+	async (req, res, next) => {
 		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			res.render('sign_up', { title: 'Sign up', errors: errors.array() });
+		const userFound = await User.findOne(
+			{ userName: req.body.email },
+			(err, user) => {
+				if (err) {
+					return next(err);
+				}
+				if (user) {
+					return true;
+				} else return;
+			}
+		);
+		if (!errors.isEmpty() || userFound) {
+			if (userFound) {
+				errors.errors.push({
+					value: '',
+					msg: 'That email is already associated with an account',
+					param: 'userName',
+					location: 'body',
+				});
+			}
+			res.render('sign_up', {
+				title: 'Sign up',
+				errors: errors.array(),
+			});
 		} else {
 			const { firstName, lastName, email } = req.body;
-			const hashedPassword = bcrypt.hash(
-				req.body.password,
-				8,
-				(err, hashed) => {
-					const user = new User({
-						firstName,
-						lastName,
-						userName: email,
-						password: hashed,
-						membershipStatus: 'active',
-					});
-					user.save((err, savedUser) => {
-						if (err) {
-							return next(err);
-						} else {
-							res.redirect('/');
-						}
-					});
+			bcrypt.hash(req.body.password, 8, (err, hashed) => {
+				if (err) {
+					return next(err);
 				}
-			);
+				const user = new User({
+					firstName,
+					lastName,
+					userName: email,
+					password: hashed,
+					membershipStatus: 'active',
+				});
+				user.save((err, savedUser) => {
+					if (err) {
+						return next(err);
+					} else {
+						res.redirect('/');
+					}
+				});
+			});
 		}
 	},
 ];
