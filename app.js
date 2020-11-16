@@ -6,20 +6,20 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const indexRouter = require('./routes/index');
 const exhbs = require('express-handlebars');
 const helpers = require('./helpers');
 const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
-const { strategy, serialize, deserialize } = require('./auth');
+const { serialize, deserialize } = require('./auth');
 const {
 	allowInsecurePrototypeAccess,
 } = require('@handlebars/allow-prototype-access');
+const Handlebars = require('handlebars');
 
 const app = express();
-
-passport.use(strategy);
 
 mongoose.connect(process.env.MONGODB_URL, {
 	useNewUrlParser: true,
@@ -43,6 +43,7 @@ app.engine(
 	exhbs({
 		extname: '.hbs',
 		helpers,
+		handlebars: allowInsecurePrototypeAccess(Handlebars),
 	})
 );
 app.set('views', path.join(__dirname, 'views'));
@@ -57,20 +58,21 @@ app.use(
 );
 
 passport.serializeUser(serialize);
-
 passport.deserializeUser(deserialize);
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use((req, res, next) => {
 	res.locals.currentUser = req.user;
 	next();
 });
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(flash());
 const logStream = fs.createWriteStream(path.join(__dirname, 'logs.txt'));
 app.use(logger('dev', { stream: logStream }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);

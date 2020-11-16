@@ -9,6 +9,7 @@ const {
 	login_post,
 	sign_up_post,
 	message_post,
+	logout,
 } = controller;
 
 /* GET home page. */
@@ -18,5 +19,6 @@ router.get('/login', login_get);
 router.get('/sign_up', sign_up_get);
 router.post('/login', login_post);
 router.post('/sign_up', sign_up_post);
+router.get('/logout', logout);
 
 module.exports = router;

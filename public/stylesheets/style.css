@@ -115,3 +115,8 @@ button {
 .sign-up-input {
 	display: block;
 }
+
+.errors {
+	margin: auto;
+	text-align: center;
+}

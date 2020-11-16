@@ -1,7 +1,0 @@
-[0mPOST /sign_up [36m302 [0m291.642 ms - 46[0m
-[0mGET / [36m304 [0m79.982 ms - -[0m
-[0mGET /stylesheets/style.css [36m304 [0m2.600 ms - -[0m
-[0mGET /sign_up [32m200 [0m15.474 ms - 1683[0m
-[0mGET /stylesheets/style.css [36m304 [0m1.201 ms - -[0m
-[0mPOST /sign_up [32m200 [0m57.465 ms - 1844[0m
-[0mGET /stylesheets/style.css [36m304 [0m1.551 ms - -[0m

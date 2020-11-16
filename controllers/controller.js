@@ -2,15 +2,31 @@ const Post = require('../models/post');
 const User = require('../models/user');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
+const { strategy } = require('../auth');
+
+passport.use(strategy);
 
 const index = function (req, res, next) {
-	const posts = Post.find()
+	const flash = req.flash();
+	const errors = [];
+	if (flash.errors) {
+		flash.errors.forEach((err) => {
+			errors.push({ msg: err });
+		});
+	}
+	Post.find()
 		.populate('author')
 		.exec((err, posts) => {
 			if (err) {
 				return next(err);
 			} else {
-				res.render('index', { title: 'Home', posts, user: req.body.user });
+				res.render('index', {
+					title: 'Home',
+					posts,
+					user: res.locals.currentUser,
+					errors,
+				});
 			}
 		});
 };
@@ -79,19 +95,48 @@ const sign_up_post = [
 ];
 
 const login_get = (req, res, next) => {
-	res.render('login', { title: 'Login' });
+	const flash = req.flash();
+	// check if there is a flash message, which only shows up with an error
+	const check = Object.keys(flash).length;
+	if (!check) {
+		// no errors, render the regular login
+		res.render('login', {
+			title: 'Login',
+		});
+	} else {
+		// error, show login with error message
+		errors = flash.error.map((err) => {
+			// put it in the same format as the validation result
+			return { msg: err };
+		});
+		res.render('login', {
+			title: 'Login',
+			errors,
+		});
+	}
 };
 
-const login_post = (req, res, next) => {
-	res.send('Sign in post');
-};
+const login_post = [
+	// sanitize data
+	body('email').trim().escape().isEmail(),
+	body('password').trim().escape(),
+	// authenticate
+	passport.authenticate('local', {
+		failureRedirect: '/login',
+		failureFlash: 'Invalid username or password',
+	}),
+	(req, res, next) => {
+		res.redirect('/');
+	},
+];
 
 const message_post = [
 	(req, res, next) => {
 		if (!res.locals.currentUser) {
-			const err = new Error('You must be logged in to post');
-			err.status = 401;
-			return next(err);
+			req.flash('errors', 'You must be logged in to post');
+			res.redirect('/');
+		} else {
+			next();
 		}
 	},
 	body('title', 'Please include a title').trim().isLength({ min: 1 }).escape(),
@@ -100,16 +145,48 @@ const message_post = [
 		.isLength({ min: 1 })
 		.escape(),
 	(req, res, next) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			// there are errors
+			Post.find()
+				.populate('author')
+				.exec((err, posts) => {
+					if (err) {
+						return next(err);
+					} else {
+						res.render('index', {
+							title: 'Home',
+							posts,
+							user: res.locals.currentUser,
+							errors: errors.array(),
+						});
+					}
+				});
+			return;
+		}
 		const { title, message } = req.body;
-		const { userId } = res.locals.currentUser._id;
-		const post = {
+		const userId = res.locals.currentUser._id;
+		const post = new Post({
 			title,
 			message,
 			author: userId,
 			time: Date.now(),
-		};
+		});
+
+		post.save((err, savedPost) => {
+			if (err) {
+				return next(err);
+			} else {
+				res.redirect('/');
+			}
+		});
 	},
 ];
+
+const logout = (req, res, next) => {
+	req.logout();
+	res.redirect('/');
+};
 
 module.exports = {
 	index,
@@ -118,4 +195,5 @@ module.exports = {
 	login_post,
 	sign_up_post,
 	message_post,
+	logout,
 };

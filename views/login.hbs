@@ -1,1 +1,17 @@
-<h1>{{title}}</h1>
+<h1 style="margin:1rem auto;padding:1rem;">{{title}}</h1>
+
+<div class="sign-up-form-container">
+  <form action="" method="post">
+    <div class="input-container">
+      <label for="email">Email:</label>
+      <input class="sign-up-input" type="email" name="email" id="email" required placeholder="person@domain.com" />
+    </div>
+    <div class="input-container">
+      <label for="password">Password:</label>
+      <input class="sign-up-input" type="password" name="password" id="password" required />
+    </div>
+    <div class="input-container"><button type="submit">Login</button></div>
+  </form>
+</div>
+
+{{> errors}}
