@@ -1,0 +1,3 @@
+[0mGET / [32m200 [0m164.359 ms - 2972[0m
+[0mGET /stylesheets/style.css [36m304 [0m3.314 ms - -[0m
+[0mGET /images/bg.png [36m304 [0m0.941 ms - -[0m

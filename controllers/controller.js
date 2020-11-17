@@ -17,6 +17,7 @@ const index = function (req, res, next) {
 	}
 	Post.find()
 		.populate('author')
+		.sort({ time: -1 })
 		.exec((err, posts) => {
 			if (err) {
 				return next(err);
@@ -26,6 +27,7 @@ const index = function (req, res, next) {
 					posts,
 					user: res.locals.currentUser,
 					errors,
+					menuOpen: false,
 				});
 			}
 		});
@@ -86,7 +88,12 @@ const sign_up_post = [
 					if (err) {
 						return next(err);
 					} else {
-						res.redirect('/');
+						req.login(savedUser, (err) => {
+							if (err) {
+								return next(err);
+							}
+							res.redirect('/');
+						});
 					}
 				});
 			});
@@ -159,6 +166,7 @@ const message_post = [
 							posts,
 							user: res.locals.currentUser,
 							errors: errors.array(),
+							menuOpen: false,
 						});
 					}
 				});

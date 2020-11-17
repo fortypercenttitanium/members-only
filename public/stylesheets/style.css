@@ -1,7 +1,10 @@
 body {
 	font-family: 'Montserrat', sans-serif;
 	margin: 0;
+	color: #2b2b2b;
 	display: block;
+	background: url('../images/bg.png');
+	background-position: cover;
 }
 
 a {
@@ -28,7 +31,7 @@ nav > a > div {
 }
 
 nav > a > div:hover {
-	background-color: lightgrey;
+	background-color: rgba(100, 100, 100, 0.4);
 }
 
 .title {
@@ -45,6 +48,11 @@ nav > a > div:hover {
 .main-container {
 	display: flex;
 	flex-direction: column;
+}
+
+.body {
+	display: block;
+	text-align: center;
 }
 
 .sign-up-form-container {
@@ -73,8 +81,15 @@ nav > a > div:hover {
 	font-weight: bold;
 	text-align: center;
 	padding: 1rem;
-	width: 8rem;
+	width: 12rem;
 	margin: auto auto 1rem;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+.new-post-button:hover {
+	background-color: #333;
+	color: #ddd;
 }
 
 .post-form {
@@ -119,4 +134,36 @@ button {
 .errors {
 	margin: auto;
 	text-align: center;
+}
+
+.posts-title {
+	margin: 2rem auto 0;
+}
+
+.posts {
+	padding: 1rem 2rem;
+}
+
+.post-container {
+	padding: 1rem 3rem;
+	text-align: left;
+	border: 1px solid black;
+	margin: 3rem auto;
+	max-width: 50rem;
+	width: 60%;
+	border-radius: 5px;
+	background-color: rgba(255, 255, 255, 0.4);
+}
+
+.post-title {
+	font-size: 2rem;
+	font-weight: bold;
+}
+
+.post-content {
+	font-size: 1.3rem;
+}
+
+.post-details {
+	color: #6a6a6a;
 }

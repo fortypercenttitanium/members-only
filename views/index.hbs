@@ -1,11 +1,10 @@
 <div class="body">
-	<h1>{{ title }}</h1>
 	{{#if user}}
 	<h2>Welcome, {{user.firstName}}</h2>
 	{{/if}}
   <div class="form-container">
-  	<div class="new-post-button"><span>Create new post</span></div>
-    <form class="post-form" method="post" action="/">
+  	<div class="new-post-button" style="{{showButton user}}"><span>Create new post</span></div>
+    <form class="post-form" method="post" action="/" style="display:none;">
       <label for="title">Title:</label>
       <input class="form-element" type="text" id="title" name="title" placeholder="Title" required />
       <label for="message" name="message">Message:</label>
@@ -18,10 +17,17 @@
 	<div class="posts">
 		{{#each posts}}
 		<div class="post-container">
-			<h2 class="post-title">{{ this.title }}</h2>
-			<p class="post-content">{{ this.message }}</p>
-			<p class="post-details">Posted by {{ this.author.firstName }} {{this.author.lastName}}, {{format_date this.time }}.</p>
+			<h2 class="post-title">{{{ this.title }}}</h2>
+			<p class="post-content">{{{ this.message }}}</p>
+			<p class="post-details">Posted by {{authorName ../user this}}, {{format_date this.time }}.</p>
 		</div>
 		{{/each}}
 	</div>
 </div>
+<script>
+	const messagePost = document.querySelector('.post-form')
+	document.querySelector('.new-post-button')
+		.addEventListener('click', () => {
+			messagePost.style.display === 'none' ? messagePost.style.display = 'block' : messagePost.style.display = 'none';
+			})
+</script>
