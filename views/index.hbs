@@ -20,6 +20,7 @@
 			<h2 class="post-title">{{{ this.title }}}</h2>
 			<p class="post-content">{{{ this.message }}}</p>
 			<p class="post-details">Posted by {{authorName ../user this}}, {{format_date this.time }}.</p>
+			<a href="/delete/{{this._id}}"><p class="delete-button">Delete post</p></a>
 		</div>
 		{{/each}}
 	</div>

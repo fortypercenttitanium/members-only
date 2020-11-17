@@ -45,6 +45,13 @@ const sign_up_post = [
 		.trim()
 		.isLength({ min: 8 })
 		.escape(),
+	body('password-confirmation').custom((value, { req }) => {
+		if (value !== req.body.password) {
+			throw new Error('Password confirmation does not match password');
+		} else {
+			return true;
+		}
+	}),
 	async (req, res, next) => {
 		const errors = validationResult(req);
 		const userFound = await User.findOne(
@@ -191,6 +198,33 @@ const message_post = [
 	},
 ];
 
+const message_delete = (req, res, next) => {
+	if (!req.user) {
+		req.flash('errors', 'Please login to delete this post');
+		res.redirect('/');
+		return;
+	}
+	const id = req.user._id;
+	Post.findById(req.params.id).exec((err, post) => {
+		if (err) {
+			const error = new Error('Post not found');
+			error.status = 404;
+			return next(error);
+		}
+		if (post.author._id.toString() === id.toString()) {
+			post.delete((err) => {
+				if (err) {
+					return next(err);
+				}
+				res.redirect('/');
+			});
+		} else {
+			req.flash('errors', 'You do not have permission to delete that post');
+			res.redirect('/');
+		}
+	});
+};
+
 const logout = (req, res, next) => {
 	req.logout();
 	res.redirect('/');
@@ -204,4 +238,5 @@ module.exports = {
 	sign_up_post,
 	message_post,
 	logout,
+	message_delete,
 };
