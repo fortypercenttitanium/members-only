@@ -4,7 +4,10 @@
 	"private": true,
 	"scripts": {
 		"devstart": "set DEBUG=members-only && nodemon ./bin/www",
-		"start": "set DEGUB=members-only && node ./bin/www"
+		"start": "set DEBUG=members-only && node ./bin/www"
+	},
+	"engines": {
+		"node": "12.18.x"
 	},
 	"dependencies": {
 		"@handlebars/allow-prototype-access": "^1.0.3",

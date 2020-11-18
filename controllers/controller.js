@@ -34,7 +34,7 @@ const index = function (req, res, next) {
 };
 
 const sign_up_get = (req, res, next) => {
-	res.render('sign_up', { title: 'Sign up' });
+	res.render('sign_up', { title: 'Sign up', user: res.locals.currentUser });
 };
 
 const sign_up_post = [
@@ -116,6 +116,7 @@ const login_get = (req, res, next) => {
 		// no errors, render the regular login
 		res.render('login', {
 			title: 'Login',
+			user: res.locals.currentUser,
 		});
 	} else {
 		// error, show login with error message
@@ -125,6 +126,7 @@ const login_get = (req, res, next) => {
 		});
 		res.render('login', {
 			title: 'Login',
+			user: res.locals.currentUser,
 			errors,
 		});
 	}
@@ -241,7 +243,12 @@ const secret_code_get = (req, res, next) => {
 		membershipStatus = res.locals.currentUser.membershipStatus;
 	}
 	const errors = req.flash().errors;
-	res.render('secret_code', { title: 'Secret code', errors, membershipStatus });
+	res.render('secret_code', {
+		title: 'Secret code',
+		user: res.locals.currentUser,
+		errors,
+		membershipStatus,
+	});
 };
 
 const secret_code_post = [
@@ -260,6 +267,7 @@ const secret_code_post = [
 		if (!errors.isEmpty()) {
 			res.render('secret_code', {
 				title: 'Secret code test',
+				user: res.locals.currentUser,
 				errors: errors.array(),
 			});
 		} else {
@@ -300,7 +308,7 @@ const secret_code_post = [
 
 const redirect = (req, res, next) => {
 	const message = req.flash().msg || [];
-	res.render('redirect', { message: message[0] });
+	res.render('redirect', { message: message[0], user: res.locals.currentUser });
 };
 
 module.exports = {

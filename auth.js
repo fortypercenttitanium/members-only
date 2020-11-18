@@ -32,7 +32,7 @@ const strategy = new LocalStrategy(
 );
 
 const serialize = (user, done) => {
-	done(null, user);
+	done(null, user.id);
 };
 
 const deserialize = (id, done) => {
