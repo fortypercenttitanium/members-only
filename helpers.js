@@ -8,8 +8,13 @@ module.exports = {
 		return user ? 'display: block;' : 'display: none;';
 	},
 	authorName: function (user, post) {
-		return user
-			? post.author.firstName + ' ' + post.author.lastName
-			: 'Anonymous';
+		if (!user) {
+			return 'Anonymous';
+		} else {
+			return user.membershipStatus === 'member' ||
+				user.membershipStatus === 'admin'
+				? post.author.firstName + ' ' + post.author.lastName
+				: 'Anonymous';
+		}
 	},
 };

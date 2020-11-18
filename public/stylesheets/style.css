@@ -1,14 +1,14 @@
 body {
 	font-family: 'Montserrat', sans-serif;
 	margin: 0;
-	color: #2b2b2b;
+	color: #191046;
 	display: block;
 	background: url('../images/bg.png');
 	background-position: cover;
 }
 
 a {
-	color: #055777;
+	color: #14035e;
 	text-decoration: none;
 }
 
@@ -31,7 +31,8 @@ nav > a > div {
 }
 
 nav > a > div:hover {
-	background-color: rgba(100, 100, 100, 0.4);
+	transform: scale(1.1);
+	text-decoration: underline;
 }
 
 .title {
@@ -48,6 +49,7 @@ nav > a > div:hover {
 .main-container {
 	display: flex;
 	flex-direction: column;
+	margin: 1rem 2rem;
 }
 
 .body {
@@ -92,7 +94,7 @@ nav > a > div:hover {
 }
 
 .new-post-button:hover {
-	background-color: #333;
+	background-color: rgb(7, 4, 49);
 	color: #ddd;
 }
 
@@ -109,7 +111,11 @@ nav > a > div:hover {
 
 .post-form > * {
 	display: flex;
-	margin: auto;
+	margin: 0.5rem auto;
+}
+
+.post-form > textarea {
+	height: 5rem;
 }
 
 .form-element {
@@ -124,6 +130,7 @@ nav > a > div:hover {
 button {
 	width: 5rem;
 	padding: 1rem;
+	margin: auto;
 }
 
 .sign-up-form-container {
@@ -156,7 +163,7 @@ button {
 	max-width: 50rem;
 	width: 60%;
 	border-radius: 5px;
-	background-color: rgba(255, 255, 255, 0.4);
+	background-color: rgba(185, 172, 235, 0.3);
 }
 
 .post-title {
@@ -170,4 +177,9 @@ button {
 
 .post-details {
 	color: #6a6a6a;
+}
+
+.secret-code-form {
+	display: block;
+	margin: auto;
 }

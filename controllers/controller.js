@@ -12,7 +12,7 @@ const index = function (req, res, next) {
 	const errors = [];
 	if (flash.errors) {
 		flash.errors.forEach((err) => {
-			errors.push({ msg: err });
+			errors.push(err);
 		});
 	}
 	Post.find()
@@ -89,7 +89,7 @@ const sign_up_post = [
 					lastName,
 					userName: email,
 					password: hashed,
-					membershipStatus: 'active',
+					membershipStatus: 'guest',
 				});
 				user.save((err, savedUser) => {
 					if (err) {
@@ -119,7 +119,7 @@ const login_get = (req, res, next) => {
 		});
 	} else {
 		// error, show login with error message
-		errors = flash.error.map((err) => {
+		errors = flash.errors.map((err) => {
 			// put it in the same format as the validation result
 			return { msg: err };
 		});
@@ -200,7 +200,7 @@ const message_post = [
 
 const message_delete = (req, res, next) => {
 	if (!req.user) {
-		req.flash('errors', 'Please login to delete this post');
+		req.flash('errors', { msg: 'Please login to delete this post' });
 		res.redirect('/');
 		return;
 	}
@@ -211,7 +211,10 @@ const message_delete = (req, res, next) => {
 			error.status = 404;
 			return next(error);
 		}
-		if (post.author._id.toString() === id.toString()) {
+		if (
+			post.author._id.toString() === id.toString() ||
+			res.locals.currentUser.membershipStatus === 'admin'
+		) {
 			post.delete((err) => {
 				if (err) {
 					return next(err);
@@ -219,7 +222,9 @@ const message_delete = (req, res, next) => {
 				res.redirect('/');
 			});
 		} else {
-			req.flash('errors', 'You do not have permission to delete that post');
+			req.flash('errors', {
+				msg: 'You do not have permission to delete that post',
+			});
 			res.redirect('/');
 		}
 	});
@@ -228,6 +233,74 @@ const message_delete = (req, res, next) => {
 const logout = (req, res, next) => {
 	req.logout();
 	res.redirect('/');
+};
+
+const secret_code_get = (req, res, next) => {
+	let membershipStatus = 'visitor';
+	if (res.locals.currentUser) {
+		membershipStatus = res.locals.currentUser.membershipStatus;
+	}
+	const errors = req.flash().errors;
+	res.render('secret_code', { title: 'Secret code', errors, membershipStatus });
+};
+
+const secret_code_post = [
+	body('secret-code', 'Please provide a secret code!').trim().escape(),
+	(req, res, next) => {
+		const code = req.body['secret-code'];
+		const user = req.user;
+		if (!user) {
+			req.flash('errors', {
+				msg: 'Please login before attempting to pass the test.',
+			});
+			res.redirect('/secret_code');
+			return;
+		}
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			res.render('secret_code', {
+				title: 'Secret code test',
+				errors: errors.array(),
+			});
+		} else {
+			if (code === process.env.SECRET_CODE) {
+				if (
+					user.membershipStatus === 'member' ||
+					user.membershipStatus === 'admin'
+				) {
+					req.flash('errors', { msg: 'You are already a member or admin.' });
+					res.redirect('/secret_code');
+				} else {
+					user.membershipStatus = 'member';
+					user.save((err) => {
+						if (err) next(err);
+					});
+					req.flash('msg', { msg: 'Congrats! You are now a member!' });
+					res.redirect('/redirect');
+				}
+			} else if (code === process.env.ADMIN_CODE) {
+				if (user.membershipStatus === 'admin') {
+					req.flash('errors', { msg: 'You are already an admin.' });
+					res.redirect('/secret_code');
+				} else {
+					user.membershipStatus = 'admin';
+					user.save((err) => {
+						if (err) next(err);
+					});
+					req.flash('msg', { msg: 'Congrats! You are now an admin!' });
+					res.redirect('/redirect');
+				}
+			} else {
+				req.flash('errors', { msg: 'Incorrect secret code.' });
+				res.redirect('/secret_code');
+			}
+		}
+	},
+];
+
+const redirect = (req, res, next) => {
+	const message = req.flash().msg || [];
+	res.render('redirect', { message: message[0] });
 };
 
 module.exports = {
@@ -239,4 +312,7 @@ module.exports = {
 	message_post,
 	logout,
 	message_delete,
+	secret_code_get,
+	secret_code_post,
+	redirect,
 };

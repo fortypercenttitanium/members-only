@@ -11,6 +11,9 @@ const {
 	message_post,
 	logout,
 	message_delete,
+	secret_code_get,
+	secret_code_post,
+	redirect,
 } = controller;
 
 /* GET home page. */
@@ -22,5 +25,8 @@ router.post('/login', login_post);
 router.post('/sign_up', sign_up_post);
 router.get('/logout', logout);
 router.get('/delete/:id', message_delete);
+router.get('/secret_code', secret_code_get);
+router.post('/secret_code', secret_code_post);
+router.get('/redirect', redirect);
 
 module.exports = router;
